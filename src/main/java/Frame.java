@@ -1,3 +1,14 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,11 +20,12 @@
  * @author Saulo
  */
 public class Frame extends javax.swing.JFrame {
-
+    private float valorUSD;
     /**
      * Creates new form Frame
      */
     public Frame() {
+        valorUSD = obtenerValorUSD();
         initComponents();
     }
 
@@ -26,21 +38,109 @@ public class Frame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        divisaSelector = new javax.swing.JComboBox<>();
+        divisaInput = new javax.swing.JTextField();
+        cantidadLabel = new javax.swing.JLabel();
+        divisaLabel = new javax.swing.JLabel();
+        conversionBoton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+
+        jLabel1.setText("jLabel1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel2.setText("Conversor de divisas");
+
+        divisaSelector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "€ (EUR)", "$ (USD)" }));
+        divisaSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                divisaSelectorActionPerformed(evt);
+            }
+        });
+
+        divisaLabel.setText("$ (USD)");
+
+        conversionBoton.setText("Convertir");
+        conversionBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conversionBotonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Introduzca una cantidad y su divisa");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(divisaInput, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(divisaSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(conversionBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cantidadLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(divisaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(divisaSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(divisaInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidadLabel)
+                    .addComponent(divisaLabel)
+                    .addComponent(conversionBoton))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void conversionBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conversionBotonActionPerformed
+        
+        String itemSeleccionado = (String)divisaSelector.getSelectedItem();
+        int divisaCantidad = Integer.parseInt(divisaInput.getText());
+        float cantidad = (float) divisaCantidad;
+        float conversion = 0;
+            if(itemSeleccionado.equals("€ (EUR)")) {
+                conversion = valorUSD*cantidad;
+            } else {
+                System.out.println(cantidad);
+                System.out.println(valorUSD);
+                conversion = cantidad*(1/valorUSD);
+            }
+            
+            cantidadLabel.setText(String.valueOf(conversion));
+        
+    }//GEN-LAST:event_conversionBotonActionPerformed
+
+    private void divisaSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divisaSelectorActionPerformed
+        String itemSeleccionado = (String)divisaSelector.getSelectedItem();
+        cantidadLabel.setText("");
+        divisaLabel.setText(itemSeleccionado.equals("$ (USD)") ? "€ (EUR)" : "$ (USD)");
+    }//GEN-LAST:event_divisaSelectorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -76,7 +176,36 @@ public class Frame extends javax.swing.JFrame {
             }
         });
     }
+    
+    private float obtenerValorUSD() {
+        try {
+            URL url = new URL("https://api.exchangeratesapi.io/latest");
+            URLConnection conexion = url.openConnection();
+            conexion.connect();
+            
+            InputStream is = conexion.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            
+            String linea = br.readLine();
+            int inicioDivisa = linea.indexOf("\"USD\":");
+            int finalDivisa = linea.indexOf(",", inicioDivisa);
+            return Float.parseFloat(linea.substring(inicioDivisa+6, finalDivisa));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cantidadLabel;
+    private javax.swing.JButton conversionBoton;
+    private javax.swing.JTextField divisaInput;
+    private javax.swing.JLabel divisaLabel;
+    private javax.swing.JComboBox<String> divisaSelector;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
