@@ -1,3 +1,5 @@
+package com.mycompany.conversordivisas;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,6 +48,7 @@ public class Frame extends javax.swing.JFrame {
         divisaLabel = new javax.swing.JLabel();
         conversionBoton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        errorMensaje = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -73,6 +76,8 @@ public class Frame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Introduzca una cantidad y su divisa");
 
+        errorMensaje.setText("jLabel4");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,6 +102,9 @@ public class Frame extends javax.swing.JFrame {
                 .addGap(169, 169, 169)
                 .addComponent(jLabel2)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(errorMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,16 +120,25 @@ public class Frame extends javax.swing.JFrame {
                     .addComponent(cantidadLabel)
                     .addComponent(divisaLabel)
                     .addComponent(conversionBoton))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorMensaje)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void conversionBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conversionBotonActionPerformed
-        
+        cantidadLabel.setText("");
+        errorMensaje.setText("");
         String itemSeleccionado = (String)divisaSelector.getSelectedItem();
-        int divisaCantidad = Integer.parseInt(divisaInput.getText());
+        int divisaCantidad = 0;
+        try {
+            divisaCantidad = Integer.parseInt(divisaInput.getText());
+        }catch (Exception e) {
+            errorMensaje.setText("Introduzca una cantidad valida");
+        }
+        
         float cantidad = (float) divisaCantidad;
         float conversion = 0;
             if(itemSeleccionado.equals("€ (EUR)")) {
@@ -202,6 +219,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JTextField divisaInput;
     private javax.swing.JLabel divisaLabel;
     private javax.swing.JComboBox<String> divisaSelector;
+    private javax.swing.JLabel errorMensaje;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
