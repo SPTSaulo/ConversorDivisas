@@ -127,8 +127,6 @@ public class Frame extends javax.swing.JFrame {
             if(itemSeleccionado.equals("€ (EUR)")) {
                 conversion = valorUSD*cantidad;
             } else {
-                System.out.println(cantidad);
-                System.out.println(valorUSD);
                 conversion = cantidad*(1/valorUSD);
             }
             
