@@ -64,6 +64,9 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
+        divisaInput.setToolTipText("");
+        divisaInput.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
         divisaLabel.setText("$ (USD)");
 
         conversionBoton.setText("Convertir");
@@ -74,9 +77,7 @@ public class Frame extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Introduzca una cantidad y su divisa");
-
-        errorMensaje.setText("jLabel4");
+        jLabel3.setText("Introduzca una cantidad y su divisa:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,7 +123,7 @@ public class Frame extends javax.swing.JFrame {
                     .addComponent(conversionBoton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorMensaje)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -132,9 +133,9 @@ public class Frame extends javax.swing.JFrame {
         cantidadLabel.setText("");
         errorMensaje.setText("");
         String itemSeleccionado = (String)divisaSelector.getSelectedItem();
-        int divisaCantidad = 0;
+        double divisaCantidad = 0;
         try {
-            divisaCantidad = Integer.parseInt(divisaInput.getText());
+            divisaCantidad = Double.parseDouble(divisaInput.getText());
         }catch (Exception e) {
             errorMensaje.setText("Introduzca una cantidad valida");
         }
